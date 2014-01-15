@@ -1,0 +1,77 @@
+#include "iostream"
+#include "cstring"
+#include "algorithm"
+#include "cmath"
+#include "cstdio"
+#include "sstream"
+#include "queue"
+#include "vector"
+#include "string"
+#include "stack"
+#include "cstdlib"
+#include "deque"
+#include "fstream"
+#include "map"
+using namespace std;
+typedef long long LL;
+const int INF = 0xfffffff;
+
+map<int , int> lis;
+vector<int> out;
+
+int main()
+{
+    int n;
+    int cntt=0;
+
+    scanf("%d",&n);
+
+    for(int i = 0 ; i < n ; i++)
+    {
+        int tmp;
+        scanf("%d" , &tmp);
+        lis[tmp]++;
+    }
+
+    map<int,int> :: iterator it = lis.begin();
+
+    int maxc = 0;
+
+    while(it != lis.end())
+    {
+        //cout <<' '<< it->first;
+        out.push_back(it->first);
+        cntt++;
+        (it->second)--;
+        maxc = max(maxc , it->first);
+        it++;
+    }
+
+    map<int , int > :: reverse_iterator it2 = lis.rbegin();
+
+    while(it2 != lis.rend())
+    {
+        if(it2 -> first >= maxc)
+        {
+            it2++;
+            continue;
+        }
+
+        if(it2->second > 0)
+        {
+            cntt++;
+            out.push_back(it2->first);
+            (it2->second)--;
+        }
+        it2++;
+    }
+
+    cout << cntt << endl;
+    cout << out[0];
+
+    for(int i = 1 ;  i < out.size()  ;i++)
+        cout << ' ' << out[i];
+    cout << endl;
+
+    return 0;
+}
