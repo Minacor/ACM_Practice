@@ -1,0 +1,61 @@
+/*判断天平能否平衡，平衡条件是|两边字母数量相等
+第二行是可以放上两边去的字母*/
+
+#include "iostream"
+#include "cstring"
+#include "algorithm"
+#include "cmath"
+#include "cstdio"
+#include "sstream"
+#include "queue"
+#include "vector"
+#include "string"
+#include "stack"
+#include "cstdlib"
+#include "deque"
+#include "fstream"
+#include "map"
+#include "set"
+using namespace std;
+typedef long long LL;
+const int INF = 0xfffffff;
+
+int main()
+{
+    string line;
+    string now;
+
+
+    cin >> line >> now;
+
+    if((line.size()-1 +now.size())%2)
+    {
+        cout << "Impossible" << endl;
+        return 0;
+    }
+
+    int lcnt=0,rcnt=0;
+    for(int i = 0 ; i < line.size() && line[i] != '|' ; i++)
+        lcnt++;
+    rcnt = line.size()-lcnt-1;
+
+    if(abs(rcnt-lcnt) > now.size())
+    {
+        cout << "Impossible" << endl;
+        return 0;
+    }
+
+    int num = line.size()-1 +now.size();
+    num/=2;
+
+    int i;
+    for( i= 0 ; i < num-lcnt ; i++)
+        cout << now[i];
+    cout << line;
+    for(; i <now.size() ; i++)
+        cout << now[i];
+    cout <<endl;
+
+    return 0;
+
+}
