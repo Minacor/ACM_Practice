@@ -60,7 +60,7 @@ int main()
 
         a++;                //树状数组从1标号，位操作的需要
 
-        int lv = getsum(a);
+        int lv = getsum(a); //先计数再更新,这样不会算上当前计数点
         cnt[lv]++;
         modify(a,1);
 
