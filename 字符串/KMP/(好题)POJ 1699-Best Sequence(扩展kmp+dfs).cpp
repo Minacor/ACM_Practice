@@ -1,4 +1,16 @@
-
+/*
+ * 题意：
+ * 连接基因使得最后得到一个长度最短的基因
+ * 如果基因a的某后缀 == b的相同长度的前缀，在a后面连接b时就能消除b的这个前缀
+ *
+ * 思路：
+ * 最大消除用扩展kmp解决
+ * 寻找最短基因可以用状压dp,dp[i][j]表示最后一个字符串是i且状态为j的最短基因
+ * 但由于数据量较小，可以用dfs解决
+ *
+ * 注意：
+ * 一个基因a是另一个基因b的非后缀子串，a不能直接匹配b，而只能以完整长度接在b的后面
+ */
 
 #include "iostream"
 #include "cstring"
@@ -73,12 +85,29 @@ int extendKMP(string a , string b)
     }
 
     for(int i = 0 ; i < b.size() ; i++)
-        if(b.size()-i == ret[i] /*|| ret[i] == a.size()*/)
+        if(b.size()-i == ret[i] )       //注意点
             return ret[i];
     return 0;
 }
 
-int dp[(1<<10)+100];
+int minc;
+int vis[15];
+
+void dfs(int cur , int v , int tot)
+{
+    if(tot == n-1)
+    {
+        minc = min(minc,v);
+        return ;
+    }
+    if(v >= minc)
+        return ;
+
+    vis[cur]=1;
+    for(int i = 0 ; i < n ; i++)
+        if(!vis[i]) dfs(i,v+(int)s[i].size()-g[i][cur],tot+1);
+    vis[cur]=0;
+}
 
 int main()
 {
@@ -89,9 +118,9 @@ int main()
     while(t--)
     {
         clr(g,-1);
-        clr(dp,0);
+        clr(vis,0);
         int sum=0;
-
+        minc = inf;
         cin >> n;
         for(int i = 0 ; i < n ; i++)
         {
@@ -104,23 +133,10 @@ int main()
             }
         }
 
-        for(int i = 1 ; i < (1 << n) ; i++)
-        {
-            for(int k = 0 ; k < n ; k++)
-            {
-                if(i & (1 << k))
-                {
-                    int last = i - (1 << k);
-                    for(int l = 0 ; l < n ; l++)
-                    {
-                        if((last&(1<<l)) && g[l][k] != -1)
-                            dp[i] = max(dp[last]+g[l][k],dp[i]);
-                    }
-                }
-            }
-        }
+        for(int i = 0 ; i < n ; i++)
+            dfs(i,(int)s[i].size(),0);
 
-        cout << sum-dp[(1<<n)-1] << endl;
+        cout << minc << endl;
     }
 
     return 0;
