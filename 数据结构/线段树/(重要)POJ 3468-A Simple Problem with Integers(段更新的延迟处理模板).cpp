@@ -83,8 +83,11 @@ void modify(int root , int l ,int r , LL delta)
 
 LL getsum(int root , int l , int r)
 {
-    if(tree[root].l == l && tree[root].r == r)
+    if(tree[root].l >= l && tree[root].r <= r)
         return tree[root].sum;
+
+    if(tree[root].l > r || tree[root].r < l)
+        return 0;
 
     if(tree[root].delta)
     {
@@ -95,12 +98,13 @@ LL getsum(int root , int l , int r)
 
     int mid = (tree[root].l+tree[root].r) >> 1;
 
-    if(mid < l)
-        return getsum(root << 1|1 , l,r);
-    else if(mid >= r)
-        return getsum(root << 1 , l,r);
-    else
-        return getsum(root << 1 , l , mid) + getsum(root << 1|1 , mid+1,r);
+    LL res=0;
+    if(mid >= l)
+        res += getsum(lson(root) , l,r);
+    if(mid < r)
+        res += getsum(rson(root) , l,r);
+
+    return res;
 }
 
 int main()
