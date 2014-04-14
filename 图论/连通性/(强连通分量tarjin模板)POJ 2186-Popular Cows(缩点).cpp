@@ -80,7 +80,7 @@ void targin(int cur)
             targin(next);
             low[cur] = min(low[cur],low[next]);
         }
-        else if(instack[cur])
+        else if(instack[next])
             low[cur] = min(low[cur],dfn[next]);
     }
 

@@ -85,7 +85,7 @@ void tarjin(int cur)
             tarjin(next);
             low[cur] = min(low[next],low[cur]);
         }
-        else if(instack[cur])
+        else if(instack[next])
             low[cur] = min(low[cur],dfn[next]);
     }
 
